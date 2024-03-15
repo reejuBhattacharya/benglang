@@ -19,7 +19,7 @@ class Scanner {
         keywords.put("class", CLASS);
         keywords.put("nahole", ELSE);
         keywords.put("bhul", FALSE);
-        keywords.put("for", FOR);
+        keywords.put("jokhon", FOR);
         keywords.put("kormo", FUN);
         keywords.put("jodi", IF);
         keywords.put("nil", NIL);
