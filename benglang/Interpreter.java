@@ -111,7 +111,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>{
     private void checkNumberOperand(Token operator, Object operand) {
         if(operand instanceof Double) return;
 
-        throw new RuntimeError(operator, "Operand must be a number.");
+        throw new RuntimeError(operator, "nombor howa dorkar");
     }
 
     private boolean isTruthy(Object object) {
@@ -184,7 +184,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>{
                 checkNumberOperands(expr.operator, left, right);
                 //check division by zero
                 if(Double.compare((double)right, 0.0)==0)
-                    throw new RuntimeError(expr.operator, "Division by 0 not possible.");
+                    throw new RuntimeError(expr.operator, "0 diye bhaag shombhob noy");
                 return (double)left / (double)right;
             case STAR: 
                 checkNumberOperands(expr.operator, left, right);
@@ -196,7 +196,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>{
                 if(left instanceof String || right instanceof String) {
                     return (String)(stringify(left)) + (String)(stringify(right));
                 }
-                throw new RuntimeError(expr.operator, "Operands must be two numbers or two strings.");
+                throw new RuntimeError(expr.operator, "shombhob noy");
         }
 
         return null;
@@ -220,7 +220,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>{
         if(left instanceof Double && right instanceof Double) 
             return;
         
-        throw new RuntimeError(operator, "Operands must be numbers.");
+        throw new RuntimeError(operator, "nombor howa dorkar");
     }
 
     private boolean isEqual(Object a, Object b) {

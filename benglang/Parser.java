@@ -51,7 +51,7 @@ class Parser {
     }
 
     private Stmt forStatement() {
-        consume(LEFT_PAREN, "Expect '(' after 'for'.");
+        consume(LEFT_PAREN, "'jokhon' er pore '(' thaka dorkar");
 
         Stmt initializer;
         if(match(SEMICOLON)) {
@@ -66,13 +66,13 @@ class Parser {
         if(!check(SEMICOLON)) {
             condition = expression();
         }
-        consume(SEMICOLON, "Expect ';' after loop condition.");
+        consume(SEMICOLON, "loop condition er age ';' thaka dorkar");
 
         Expr increment = null;
         if(!check(RIGHT_PAREN)) {
             increment = expression();
         }
-        consume(RIGHT_PAREN, "Expect ')' after for clauses.");
+        consume(RIGHT_PAREN, "'for' er sheshe ')' thaka dorkar");
         Stmt body = statement();
 
         if(increment != null) {
@@ -97,18 +97,18 @@ class Parser {
     }
 
     private Stmt whileStatement() {
-        consume(LEFT_PAREN, "Expect '(' after 'while'.");
+        consume(LEFT_PAREN, "'jotokhon' er por '(' dorkar.");
         Expr condition = expression();
-        consume(RIGHT_PAREN, "Expect ')' after condition");
+        consume(RIGHT_PAREN, "condition er por ')' dorkar");
         Stmt body = statement();
 
         return new Stmt.While(condition, body);
     }
 
     private Stmt ifStatement() {
-        consume(LEFT_PAREN, "Expect '(' after 'if'.");
+        consume(LEFT_PAREN, "jodi r por '(' dorkar.");
         Expr condition = expression();
-        consume(RIGHT_PAREN, "Expect ')' after if condition");
+        consume(RIGHT_PAREN, "condition er por ')' dorkar.");
 
         Stmt thenBranch = statement();
         Stmt elseBranch = null;
@@ -122,24 +122,24 @@ class Parser {
 
     private Stmt printStatement() {
         Expr value = expression();
-        consume(SEMICOLON, "Expect ';' after value.");
+        consume(SEMICOLON, "';' ta nei");
         return new Stmt.Print(value);
     }
 
     private Stmt varDeclaration() {
-        Token name = consume(IDENTIFIER, "Expect variable name.");
+        Token name = consume(IDENTIFIER, "Variable er naam nei");
 
         Expr initializer = null;
         if(match(EQUAL)) {
             initializer = expression();
         }
-        consume(SEMICOLON, "Expect ';' after variable declaration.");
+        consume(SEMICOLON, "variable lekhar por ';' dorkar.");
         return new Stmt.Var(name, initializer);
     }
 
     private Stmt expressionStatement() {
         Expr expr = expression();
-        consume(SEMICOLON, "Expect ';' after expression.");
+        consume(SEMICOLON, "';' ta nei");
         return new Stmt.Expression(expr);
     }
 
@@ -150,7 +150,7 @@ class Parser {
             statements.add(declaration());
         }
 
-        consume(RIGHT_BRACE, "Expect '}' after block.");
+        consume(RIGHT_BRACE, "block er sheshe '}' dorkar.");
         return statements;
     }
 
@@ -166,7 +166,7 @@ class Parser {
                 return new Expr.Assign(name, value);
             }
 
-            error(equals, "Invalid assignment target.");
+            error(equals, "bhul bhabe assign korcho");
         }
 
         return expr;
@@ -259,14 +259,14 @@ class Parser {
         if(!check(RIGHT_PAREN)) {
             do {
                 if(arguments.size() >= 255) {
-                    error(peek(), "Can't have more than 255 arguments");
+                    error(peek(), "eto gulo argument cholbe na");
                 }
                 arguments.add(expression());
             } while(match(COMMA));
         }
 
         Token paren = consume(RIGHT_PAREN, 
-                                "Expect ')' after arguments.");
+                                "argument er pore ')' dorkar.");
         
         return new Expr.Call(callee, paren, arguments);
     }
@@ -300,11 +300,11 @@ class Parser {
 
         if(match(LEFT_PAREN)) {
             Expr expr = expression();
-            consume(RIGHT_PAREN, "Expect ')' after expression.");
+            consume(RIGHT_PAREN, "')' ta nei");
             return new Expr.Grouping(expr);
         }
 
-        throw error(peek(), "Expect expression.");
+        throw error(peek(), "expression ta nei");
     }
 
     private boolean match(TokenType... types) {
