@@ -96,6 +96,15 @@ class Parser {
         return body;
     }
 
+    private Stmt whileStatement() {
+        consume(LEFT_PAREN, "Expect '(' after 'while'.");
+        Expr condition = expression();
+        consume(RIGHT_PAREN, "Expect ')' after condition");
+        Stmt body = statement();
+
+        return new Stmt.While(condition, body);
+    }
+
     private Stmt ifStatement() {
         consume(LEFT_PAREN, "Expect '(' after 'if'.");
         Expr condition = expression();
@@ -109,6 +118,7 @@ class Parser {
 
         return new Stmt.If(condition, thenBranch, elseBranch);
     }
+
 
     private Stmt printStatement() {
         Expr value = expression();
@@ -125,15 +135,6 @@ class Parser {
         }
         consume(SEMICOLON, "Expect ';' after variable declaration.");
         return new Stmt.Var(name, initializer);
-    }
-
-    private Stmt whileStatement() {
-        consume(LEFT_PAREN, "Expect '(' after 'while'.");
-        Expr condition = expression();
-        consume(RIGHT_PAREN, "Expect ')' after condition");
-        Stmt body = statement();
-
-        return new Stmt.While(condition, body);
     }
 
     private Stmt expressionStatement() {
