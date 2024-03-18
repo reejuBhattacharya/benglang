@@ -22,6 +22,12 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>{
     }
 
     @Override
+    public Void visitBlockStmt(Stmt.Block stmt) {
+        executeBlock(stmt.statements, new Environment(environment));
+        return null;
+    }
+
+    @Override
     public Void visitExpressionStmt(Stmt.Expression stmt) {
         evaluate(stmt.expression);
         return null;
@@ -113,23 +119,6 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>{
         return evaluate(expr.expression);
     }
 
-    @Override
-    public Void visitBlockStmt(Stmt.Block stmt) {
-        executeBlock(stmt.statements, new Environment(environment));
-        return null;
-    }
-
-    void executeBlock(List<Stmt> statements, Environment environment) {
-        Environment previous = this.environment;
-        try {
-            this.environment = environment;
-            for(Stmt statement: statements) {
-                execute(statement);
-            }
-        } finally {
-            this.environment = previous;
-        }
-    }
 
     @Override
     public Object visitBinaryExpr(Binary expr) {
@@ -194,6 +183,18 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>{
         return null;
     }
 
+    void executeBlock(List<Stmt> statements, Environment environment) {
+        Environment previous = this.environment;
+        try {
+            this.environment = environment;
+            for(Stmt statement: statements) {
+                execute(statement);
+            }
+        } finally {
+            this.environment = previous;
+        }
+    }
+
     private Object evaluate(Expr expr) {
         return expr.accept(this);
     }
@@ -201,7 +202,6 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>{
     private void execute(Stmt stmt) {
         stmt.accept(this);
     }
-
 
     private void checkNumberOperand(Token operator, Object operand) {
         if(operand instanceof Double) return;

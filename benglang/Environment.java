@@ -7,11 +7,11 @@ class Environment {
     final Environment enclosing;
     private final Map<String, Object> values = new HashMap<>();
 
-    Environment() {
+    Environment() { // for global variables
         enclosing = null;
     }
 
-    Environment(Environment enclosing) {
+    Environment(Environment enclosing) { // for others
         this.enclosing = enclosing;
     }
 
