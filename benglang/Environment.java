@@ -24,7 +24,7 @@ class Environment {
             return enclosing.get(name);
 
         throw new RuntimeError(name, 
-            "Undefined variable '"+name.lexeme+"'.");
+            "variable ta defined noy '"+name.lexeme+"'.");
     }
 
     void assign(Token name, Object value) {
@@ -39,7 +39,7 @@ class Environment {
         }
 
         throw new RuntimeError(name, 
-                "Undefined variable '"+name.lexeme+"'.");   
+                "variable ta defined noy '"+name.lexeme+"'.");   
     }
 
     void define(String name, Object value) {

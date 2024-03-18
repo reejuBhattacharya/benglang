@@ -54,24 +54,24 @@ class Parser {
         consume(LEFT_PAREN, "'jokhon' er pore '(' thaka dorkar");
 
         Stmt initializer;
-        if(match(SEMICOLON)) {
+        if(match(SEMICOLON)) 
             initializer = null;
-        } else if(match(VAR)) {
+        else if(match(VAR))
             initializer = varDeclaration();
-        } else {
+        else 
             initializer = expressionStatement();
-        }
+        
 
         Expr condition = null;
-        if(!check(SEMICOLON)) {
+        if(!check(SEMICOLON)) 
             condition = expression();
-        }
+        
         consume(SEMICOLON, "loop condition er age ';' thaka dorkar");
 
         Expr increment = null;
-        if(!check(RIGHT_PAREN)) {
+        if(!check(RIGHT_PAREN)) 
             increment = expression();
-        }
+        
         consume(RIGHT_PAREN, "'for' er sheshe ')' thaka dorkar");
         Stmt body = statement();
 
@@ -84,14 +84,14 @@ class Parser {
             );
         }
 
-        if(condition == null) {
+        if(condition == null)
             condition = new Expr.Literal(true);
-        }
+        
         body = new Stmt.While(condition, body);
 
-        if(initializer != null) {
+        if(initializer != null)
             body = new Stmt.Block(Arrays.asList(initializer, body));
-        }
+        
 
         return body;
     }
@@ -112,9 +112,9 @@ class Parser {
 
         Stmt thenBranch = statement();
         Stmt elseBranch = null;
-        if (match(ELSE)) {
+        if (match(ELSE))
             elseBranch = statement();
-        }
+        
 
         return new Stmt.If(condition, thenBranch, elseBranch);
     }
@@ -130,9 +130,9 @@ class Parser {
         Token name = consume(IDENTIFIER, "Variable er naam nei");
 
         Expr initializer = null;
-        if(match(EQUAL)) {
+        if(match(EQUAL))
             initializer = expression();
-        }
+        
         consume(SEMICOLON, "variable lekhar por ';' dorkar.");
         return new Stmt.Var(name, initializer);
     }
@@ -275,28 +275,28 @@ class Parser {
         Expr expr = primary();
 
         while(true) {
-            if(match(LEFT_PAREN)) {
+            if(match(LEFT_PAREN)) 
                 expr = finishCall(expr);
-            } else {
+            else
                 break;
-            }
         }
 
         return expr;
     }
 
     private Expr primary() {
-        if(match(FALSE)) return new Expr.Literal(false);
-        if(match(TRUE)) return new Expr.Literal(true);
-        if(match(NIL)) return new Expr.Literal(null);
+        if(match(FALSE))
+            return new Expr.Literal(false);
+        if(match(TRUE)) 
+            return new Expr.Literal(true);
+        if(match(NIL)) 
+            return new Expr.Literal(null);
 
-        if(match(NUMBER, STRING)) {
+        if(match(NUMBER, STRING))
             return new Expr.Literal(previous().literal);
-        }
 
-        if(match(IDENTIFIER)) {
+        if(match(IDENTIFIER))
             return new Expr.Variable(previous());
-        }
 
         if(match(LEFT_PAREN)) {
             Expr expr = expression();

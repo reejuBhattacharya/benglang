@@ -108,31 +108,9 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>{
         return null;
     }
 
-    private void checkNumberOperand(Token operator, Object operand) {
-        if(operand instanceof Double) return;
-
-        throw new RuntimeError(operator, "nombor howa dorkar");
-    }
-
-    private boolean isTruthy(Object object) {
-        if(object==null) return false;
-        if(object instanceof Boolean) {
-            return (boolean) object;
-        }
-        return true;
-    }
-
     @Override
     public Object visitGroupingExpr(Expr.Grouping expr) {
         return evaluate(expr.expression);
-    }
-
-    private Object evaluate(Expr expr) {
-        return expr.accept(this);
-    }
-
-    private void execute(Stmt stmt) {
-        stmt.accept(this);
     }
 
     @Override
@@ -214,6 +192,29 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>{
         // LoxCallable function = (LoxCallable)callee;
         // return function.call(this, arguments);
         return null;
+    }
+
+    private Object evaluate(Expr expr) {
+        return expr.accept(this);
+    }
+
+    private void execute(Stmt stmt) {
+        stmt.accept(this);
+    }
+
+
+    private void checkNumberOperand(Token operator, Object operand) {
+        if(operand instanceof Double) return;
+
+        throw new RuntimeError(operator, "nombor howa dorkar");
+    }
+
+    private boolean isTruthy(Object object) {
+        if(object==null) return false;
+        if(object instanceof Boolean) {
+            return (boolean) object;
+        }
+        return true;
     }
 
     private void checkNumberOperands(Token operator, Object left, Object right) {
